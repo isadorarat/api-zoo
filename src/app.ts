@@ -7,6 +7,8 @@ import { Ave } from './model/Ave';
 import { Mamifero } from './model/Mamifero';
 import { Reptil } from './model/Reptil';
 import { Habitat } from './model/Habitat';
+import { Atracao } from './model/Atracao';
+import { Zoologico } from './model/Zologico';
 
 // Porta em que o servidor irá rodar
 const port = 4321;
@@ -42,6 +44,28 @@ server.post('/ave', (req, res) => {
     res.json(['Esta é a nova ave do Zoologico:', novaAve]);
 });
 
+server.post('/habitat', (req, res)=>{
+    const {nome,animais} = req.body;
+    const habitat = new Habitat(nome, animais);
+    console.log(habitat);
+    res.status(200).json('Habitat criado');
+
+});
+server.post('/atracao', (req, res)=>{
+    const {nome,habitat} = req.body;
+    const atracao = new Atracao(nome, habitat);
+    console.log(atracao);
+    res.status(200).json('atracao criada');
+
+});
+
+server.post('/zologico', (req, res)=>{
+    const {nome,atracao} = req.body;
+    const zologico = new Zoologico(nome, atracao);
+    console.log(zologico);
+    res.status(200).json('zoologico criado');
+
+});
 // Inicia o servidor na porta especificada
 server.listen(port, () => {
     console.log(`Servidor está escutando no endereço http://localhost:${port}`);
