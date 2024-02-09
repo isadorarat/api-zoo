@@ -1,29 +1,41 @@
-// Importa a classe Animal do arquivo Animal.ts no mesmo diretório
 import { Animal } from "./Animal";
 
-// Declaração da classe Ave que herda de Animal
+/**
+ * Classe Ave representa uma ave no contexto de um zoológico, estendendo a classe Animal.
+ */
 export class Ave extends Animal {
-    // Atributo privado específico da classe Ave
     private envergadura: number;
 
-    // Construtor da classe Ave, recebe nome, idade, gênero e envergadura como parâmetros
+    /**
+     * Construtor da classe Ave.
+     * @param _nome - O nome da ave.
+     * @param _idade - A idade da ave.
+     * @param _genero - O gênero da ave.
+     * @param _envergadura - A envergadura da ave.
+     */
     constructor(
         _nome: string,
         _idade: number,
         _genero: string,
         _envergadura: number) {
-        // Chama o construtor da classe Animal usando super() para inicializar os atributos herdados
+        //* Chama o construtor da classe pai (Animal) com as propriedades específicas de Ave.
         super(_nome, _idade, _genero);
-        // Inicializa o atributo específico da classe Ave
+        //*Inicializa a propriedade específica de Ave.
         this.envergadura = _envergadura;
     }
 
-    // Método público que retorna a envergadura da ave
+    /**
+     * Obtém a envergadura da ave.
+     * @returns A envergadura da ave.
+     */
     public getEnvergadura(): number {
         return this.envergadura;
     }
 
-    // Método público para definir a envergadura da ave
+    /**
+     * Define a envergadura da ave.
+     * @param envergadura - Nova envergadura da ave.
+     */
     public setEnvergadura(envergadura: number): void {
         this.envergadura = envergadura;
     }

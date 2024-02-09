@@ -1,36 +1,51 @@
-// Importa a classe Habitat do arquivo Habitat.ts no mesmo diretório
 import { Habitat } from "./Habitat";
 
-// Declaração da classe Atracao
+/**
+ * Classe Atracao representa uma atração em um zoológico.
+ */
 export class Atracao {
-    // Atributos privados da classe
     private nome: string;
     private listaDeHabitats: Array<Habitat>;
 
-    // Construtor da classe Atracao, recebe nome e lista de habitats como parâmetros
+    /**
+     * Construtor da classe Atracao.
+     * @param _nome - O nome da atração.
+     * @param _listaDeHabitats - Lista de habitats associados à atração.
+     */
     constructor(_nome: string, _listaDeHabitats: Array<Habitat>) {
-        // Inicializa os atributos com os valores recebidos no construtor
         this.nome = _nome;
         this.listaDeHabitats = _listaDeHabitats;
     }
 
-    // Método público que retorna o nome da atração
+    /**
+     * Obtém o nome da atração.
+     * @returns O nome da atração.
+     */
     public getNome(): string {
         return this.nome;
     }
 
-    // Método público para definir o nome da atração
-    public setNome(nome: string) {
+    /**
+     * Define o nome da atração.
+     * @param nome - Novo nome da atração.
+     */
+    public setNome(nome: string): void {
         this.nome = nome;
     }
 
-    // Método público que retorna a lista de habitats da atração
+    /**
+     * Obtém a lista de habitats associados à atração.
+     * @returns A lista de habitats.
+     */
     public getListaDeHabitats(): Array<Habitat> {
         return this.listaDeHabitats;
     }
 
-    // Método público para definir a lista de habitats da atração
-    public setListaDeHabitats(listaDeHabitats: Array<Habitat>) {
+    /**
+     * Define a lista de habitats associados à atração.
+     * @param listaDeHabitats - Nova lista de habitats.
+     */
+    public setListaDeHabitats(listaDeHabitats: Array<Habitat>): void {
         this.listaDeHabitats = listaDeHabitats;
     }
 }
