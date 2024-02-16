@@ -15,7 +15,7 @@ export class Zoologico {
         this.nome = _nome;
         this.listaAtracoes = _listaAtracoes;
     }
-
+ 
     /**
      * Método para obter o nome do zoológico.
      * 
