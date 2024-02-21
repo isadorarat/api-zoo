@@ -65,11 +65,32 @@ server.post('/zologico', (req, res) => {
     const zologico = new Zoologico(nome, atracao);
     console.log(zologico);
     res.status(200).json('zoologico criado');
-
 });
+
+server.get('/list/reptil', async (req, res) => {
+    const repteis = await Reptil.listarRepteis();
+
+    res.status(200).json(repteis);
+})
+
+server.post('/new/reptil', async (req, res) => {
+    const { nome, idade, genero, tipo_de_escamas } = req.body;
+
+    const novoReptil = new Reptil(nome, idade, genero, tipo_de_escamas);
+
+    const result = await Reptil.cadastrarReptil(novoReptil);
+
+    if (result) {
+        return res.status(200).json('Reptil cadastrado com sucesso');
+    } else {
+        return res.status(400).json('Não foi possível cadastrar o réptil no banco de dados');
+    }
+
+})
+
 // Inicia o servidor na porta especificada
 new DatabaseModel().testeConexao().then((resbd) => {
-    if(resbd) {
+    if (resbd) {
         server.listen(port, () => {
             console.log(`Servidor rodando em http://localhost:${port}`);
         })
