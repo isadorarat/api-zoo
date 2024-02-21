@@ -9,6 +9,7 @@ import { Reptil } from './model/Reptil';
 import { Habitat } from './model/Habitat';
 import { Atracao } from './model/Atracao';
 import { Zoologico } from './model/Zologico';
+import { DatabaseModel } from './model/DatabaseModel';
 
 // Porta em que o servidor irá rodar
 const port = 4321;
@@ -26,7 +27,7 @@ server.get('/', (req, res) => {
     let ave: Ave = new Ave('Papagaio', 15, 'Masculino', 10);
     let reptil: Reptil = new Reptil('largato', 2, 'femea', 'cicloides');
     let mamifero: Mamifero = new Mamifero('Doberman', 'cachorro', 102, 'femea');
-    
+
 
     // Retorna a lista de instâncias no formato JSON como resposta à requisição
     res.json([ave, reptil, mamifero]);
@@ -44,29 +45,35 @@ server.post('/ave', (req, res) => {
     res.json(['Esta é a nova ave do Zoologico:', novaAve]);
 });
 
-server.post('/habitat', (req, res)=>{
-    const {nome,animais} = req.body;
+server.post('/habitat', (req, res) => {
+    const { nome, animais } = req.body;
     const habitat = new Habitat(nome, animais);
     console.log(habitat);
     res.status(200).json('Habitat criado');
 
 });
-server.post('/atracao', (req, res)=>{
-    const {nome,habitat} = req.body;
+server.post('/atracao', (req, res) => {
+    const { nome, habitat } = req.body;
     const atracao = new Atracao(nome, habitat);
     console.log(atracao);
     res.status(200).json('atracao criada');
 
 });
 
-server.post('/zologico', (req, res)=>{
-    const {nome,atracao} = req.body;
+server.post('/zologico', (req, res) => {
+    const { nome, atracao } = req.body;
     const zologico = new Zoologico(nome, atracao);
     console.log(zologico);
     res.status(200).json('zoologico criado');
 
 });
 // Inicia o servidor na porta especificada
-server.listen(port, () => {
-    console.log(`Servidor está escutando no endereço http://localhost:${port}`);
-});
+new DatabaseModel().testeConexao().then((resbd) => {
+    if(resbd) {
+        server.listen(port, () => {
+            console.log(`Servidor rodando em http://localhost:${port}`);
+        })
+    } else {
+        console.log('Não foi possível conectar ao banco de dados');
+    }
+})
