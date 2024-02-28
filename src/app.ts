@@ -1,48 +1,20 @@
-// Importa o framework Express para criação do servidor
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
+import { Habitat } from "./model/Habitat";
+import { Atracao } from "./model/Atracao";
+import { DatabaseModel } from "./model/DatabaseModel";
+import { Reptil } from "./model/Reptil";
+import { Mamifero } from "./model/Mamifero";
+import { Ave } from "./model/Ave";
 
-// Importa as classes de modelos
-import { Ave } from './model/Ave';
-import { Mamifero } from './model/Mamifero';
-import { Reptil } from './model/Reptil';
-import { Habitat } from './model/Habitat';
-import { Atracao } from './model/Atracao';
-import { Zoologico } from './model/Zologico';
-import { DatabaseModel } from './model/DatabaseModel';
-
-// Porta em que o servidor irá rodar
-const port = 4321;
-
-// Criação do servidor Express
 const server = express();
+const port: number = 3000;
 
 server.use(express.json());
-
 server.use(cors());
 
-// Rota principal que retorna uma lista contendo instâncias de diferentes classes de animais e habitat
 server.get('/', (req, res) => {
-    // Cria instâncias de diferentes classes de animais e habitat
-    let ave: Ave = new Ave('Papagaio', 15, 'Masculino', 10);
-    let reptil: Reptil = new Reptil('largato', 2, 'femea', 'cicloides');
-    let mamifero: Mamifero = new Mamifero('Doberman', 'cachorro', 102, 'femea');
-
-
-    // Retorna a lista de instâncias no formato JSON como resposta à requisição
-    res.json([ave, reptil, mamifero]);
-});
-
-// Rota para criar uma nova ave através de uma requisição POST
-server.post('/ave', (req, res) => {
-    // Extrai os dados da requisição
-    const { nome, idade, genero, envergadura } = req.body;
-
-    // Cria uma nova instância de Ave com os dados fornecidos
-    const novaAve = new Ave(nome, idade, genero, envergadura);
-
-    // Retorna a nova ave como resposta à requisição
-    res.json(['Esta é a nova ave do Zoologico:', novaAve]);
+    res.json("ola");
 });
 
 server.post('/habitat', (req, res) => {
@@ -50,22 +22,15 @@ server.post('/habitat', (req, res) => {
     const habitat = new Habitat(nome, animais);
     console.log(habitat);
     res.status(200).json('Habitat criado');
-
 });
+
 server.post('/atracao', (req, res) => {
     const { nome, habitat } = req.body;
     const atracao = new Atracao(nome, habitat);
     console.log(atracao);
-    res.status(200).json('atracao criada');
-
+    res.status(200).json('Atração criada');
 });
 
-server.post('/zologico', (req, res) => {
-    const { nome, atracao } = req.body;
-    const zologico = new Zoologico(nome, atracao);
-    console.log(zologico);
-    res.status(200).json('zoologico criado');
-});
 
 server.get('/list/reptil', async (req, res) => {
     const repteis = await Reptil.listarRepteis();
@@ -80,17 +45,56 @@ server.post('/new/reptil', async (req, res) => {
 
     const result = await Reptil.cadastrarReptil(novoReptil);
 
-    if (result) {
+    if(result) {
         return res.status(200).json('Reptil cadastrado com sucesso');
     } else {
         return res.status(400).json('Não foi possível cadastrar o réptil no banco de dados');
     }
-
+    
 })
 
-// Inicia o servidor na porta especificada
+server.get('/list/mamifero', async (req, res) => {
+    const mamifero = await Mamifero.listarMamiferos();
+
+    res.status(200).json(mamifero);
+})
+
+server.post('/new/mamifero', async (req, res) => {
+    const { nome, idade, genero, raca } = req.body;
+
+    const novoMamifero = new Mamifero(raca, nome, idade, genero);
+
+    const result = await Mamifero.cadastrarMamifero(novoMamifero);
+
+    if(result) {
+        return res.status(200).json('Mamifero cadastrado com sucesso');
+    } else {
+        return res.status(400).json('Não foi possível cadastrar o mamifero no banco de dados');
+    }
+})
+
+server.get('/list/ave', async (req, res) => {
+    const ave = await Ave.listarAves();
+
+    res.status(200).json(ave);
+})
+
+server.post('/new/ave', async (req, res) => {
+    const { nome, idade, genero, envergadura } = req.body;
+
+    const novaAve = new Ave(nome, idade, genero, envergadura);
+
+    const result = await Ave.cadastrarAve(novaAve);
+
+    if(result) {
+        return res.status(200).json('Ave cadastrado com sucesso');
+    } else {
+        return res.status(400).json('Não foi possível cadastrar o ave no banco de dados');
+    }
+})
+
 new DatabaseModel().testeConexao().then((resbd) => {
-    if (resbd) {
+    if(resbd) {
         server.listen(port, () => {
             console.log(`Servidor rodando em http://localhost:${port}`);
         })
